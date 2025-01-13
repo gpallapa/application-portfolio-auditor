@@ -8,6 +8,8 @@ ARG CSA_BAGGER_VERSION
 RUN mkdir /app
 COPY . /app
 WORKDIR /app
+# Fix for issue on M4 - https://github.com/rancher-sandbox/rancher-desktop/issues/8057#issuecomment-2586147638
+ENV JAVA_TOOL_OPTIONS="-XX:UseSVE=0"
 RUN mvn clean package assembly:single -DskipTests -DcsvBaggerVersion=${CSA_BAGGER_VERSION}
 RUN jar xf target/bagger-${CSA_BAGGER_VERSION}.jar
 RUN jdeps --ignore-missing-deps -q  \
@@ -26,9 +28,11 @@ RUN jlink \
 
 FROM ${IMG_SLIM}
 ARG CSA_BAGGER_VERSION
-ENV JAVA_HOME /user/java/jdk
-ENV PATH $JAVA_HOME/bin:$PATH
-ENV BAGGER_DB_TMP /app/bagger_tmp
+
+ENV JAVA_HOME=/user/java/jdk
+ENV PATH=$JAVA_HOME/bin:$PATH
+ENV BAGGER_DB_TMP=/app/bagger_tmp
+
 RUN addgroup --gid 1234 javauser 
 RUN useradd --uid 1234 -g javauser javauser
 RUN mkdir -p /app $JAVA_HOME $BAGGER_DB_TMP
@@ -37,4 +41,6 @@ COPY --from=build /app/target/bagger-${CSA_BAGGER_VERSION}-jar-with-dependencies
 WORKDIR /app
 RUN chown -R javauser:javauser /app "${BAGGER_DB_TMP}"
 USER javauser
-ENTRYPOINT [ "java", "-Djava.io.tmpdir=/app/bagger_tmp", "-jar", "/app/bagger.jar" ]
+# Fix for issue on M4 - https://github.com/rancher-sandbox/rancher-desktop/issues/8057#issuecomment-2586147638
+ENTRYPOINT [ "java", "-XX:UseSVE=0", "-Djava.io.tmpdir=/app/bagger_tmp", "-jar", "/app/bagger.jar" ]
+

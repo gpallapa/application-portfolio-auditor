@@ -9,6 +9,8 @@ ARG IMG_DOTNET_RUNTIME
 FROM ${IMG_GO} AS go
 
 FROM ${IMG_JLINK} AS jlink
+# Fix for issue on M4 - https://github.com/rancher-sandbox/rancher-desktop/issues/8057#issuecomment-2586147638
+ENV JAVA_TOOL_OPTIONS="-XX:UseSVE=0"
 RUN "$JAVA_HOME/bin/jlink" --compress=2 --module-path /opt/java/openjdk/jmods --add-modules java.base,java.compiler,java.datatransfer,jdk.crypto.ec,java.desktop,java.instrument,java.logging,java.management,java.naming,java.rmi,java.scripting,java.security.sasl,java.sql,java.transaction.xa,java.xml,jdk.unsupported --output /jlinked
 
 FROM ${IMG_DOTNET_RUNTIME}

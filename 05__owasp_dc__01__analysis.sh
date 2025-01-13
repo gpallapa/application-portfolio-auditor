@@ -49,7 +49,6 @@ function analyze() {
 		# Append arguments valid for all scans
 		ARGS+=("${ARGS_GLOBAL[@]}")
 
-		set -x
 		set +e
 		(
 			time ${CONTAINER_ENGINE} run ${CONTAINER_ENGINE_ARG} --rm \
@@ -62,7 +61,6 @@ function analyze() {
 				"${ARGS[@]}"
 		) >>"${LOG_FILE}" 2>&1
 		set -e
-		set +x
 
 		if [[ -f "${APP_DIR_OUT}/dependency-check-junit.xml" ]]; then
 			mv "${APP_DIR_OUT}/dependency-check-junit.xml" "${APP_DIR_OUT}/${APP_NAME}_dc_junit.xml"

@@ -459,6 +459,10 @@ else
 	cp "${SCRIPT_PATH}/../../dist/containerized/scancode-toolkit/scancode" .
 	chmod +x scancode
 
+	# Fix issue with Dockerfile
+	rm Dockerfile
+	cp "${SCRIPT_PATH}/../../dist/containerized/scancode-toolkit/Dockerfile" .
+
 	# Fix html-app markup
 	wget -q -O "src/formattedcode/templates/html-app/assets/jquery.min.map" "https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.map"
 	rm src/formattedcode/templates/html-app/assets/scancode_datatable.js
@@ -572,35 +576,9 @@ FSB_DIST="${DIST_DIR}/oci__findsecbugs_${FSB_VERSION}.img"
 if [ -f "${FSB_DIST}" ]; then
 	echo "[INFO] 'FindSecBugs' (${FSB_VERSION}) is already available"
 else
-	FSB_ZIP="${DIST_DIR}/containerized/findsecbugs/findsecbugs-cli-${FSB_VERSION}.zip"
-
 	# Delete previous versions
-	find "${SCRIPT_PATH}/../../dist/containerized/findsecbugs/" -type f -iname 'findsecbugs-cli*.zip' ! -name findsecbugs-cli-${FSB_VERSION}.zip -delete
+	find "${SCRIPT_PATH}/../../dist/containerized/findsecbugs/" -type f -iname 'findsecbugs-cli*.zip' -delete
 	find "${DIST_DIR}" -type f -iname 'oci__findsecbugs_*.img' -delete
-
-	if [ -f "${FSB_ZIP}" ]; then
-		echo "[INFO] 'FSB zip' (findsecbugs-cli-${FSB_VERSION}.zip) is already available"
-	else
-		simple_check_and_download "FindSecBugs" "containerized/findsecbugs/findsecbugs-cli-${FSB_VERSION}.zip" "https://github.com/find-sec-bugs/find-sec-bugs/releases/download/version-${FSB_VERSION}/findsecbugs-cli-${FSB_VERSION}.zip" "${FSB_VERSION}"
-		TMP_DIR="${DIST_DIR}/tmp"
-		TMP_FSB_DIR="${TMP_DIR}/findsecbugs-cli-${FSB_VERSION}"
-		rm -Rf "${TMP_DIR}"
-		mkdir -p "${TMP_FSB_DIR}"
-		unzip "${FSB_ZIP}" -d "${TMP_FSB_DIR}" &>/dev/null
-
-		pushd "${TMP_FSB_DIR}" &>/dev/null
-		chmod +x findsecbugs.sh
-		# Remove spurious CR characters
-		stream_edit 's/\r$//' findsecbugs.sh
-		rm -f findsecbugs.bat
-		cd ..
-		mv "findsecbugs-cli-${FSB_VERSION}" "findsecbugs-cli"
-		zip -r "findsecbugs-cli-${FSB_VERSION}.zip" "./findsecbugs-cli" &>/dev/null
-		popd &>/dev/null
-
-		mv "${TMP_DIR}/findsecbugs-cli-${FSB_VERSION}.zip" "${FSB_ZIP}"
-		rm -Rf "${TMP_DIR}"
-	fi
 
 	# Build container image
 	pushd "${SCRIPT_PATH}/../../dist/containerized/findsecbugs" &>/dev/null

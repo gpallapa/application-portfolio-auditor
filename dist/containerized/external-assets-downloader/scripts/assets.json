@@ -1,11 +1,5 @@
 [
     {
-        "description": "Favicon - VMware",
-        "url": "https://www.vmware.com/favicon.ico",
-        "targetName": "favicon.ico",
-        "targetDir": "img"
-    },
-    {
         "description": "Logo - Archeo",
         "url": "https://cdn-icons-png.flaticon.com/512/1674/1674561.png",
         "targetName": "archeo.png",

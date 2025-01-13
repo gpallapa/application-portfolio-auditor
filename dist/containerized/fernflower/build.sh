@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-set -x
 
 LATEST_TAG="idea/${1}"
 REPO_URL=https://github.com/JetBrains/intellij-community.git
@@ -39,7 +38,9 @@ cd plugins/java-decompiler/engine || exit 1
 
 # Build Fernflower using the configured $JAVA_VERSION
 stream_edit "s/targetCompatibility '.*'/targetCompatibility '${JAVA_VERSION}'/" build.gradle
-GRADLE_OPTS="-Dorg.gradle.daemon=false" gradle assemble
+
+# Fix for issue on M4 - https://github.com/rancher-sandbox/rancher-desktop/issues/8057#issuecomment-2586147638
+JAVA_TOOL_OPTIONS="-XX:UseSVE=0" GRADLE_OPTS="-Dorg.gradle.daemon=false" gradle assemble
 
 check_built_java_version "${TMP_DIR}/intellij-community/plugins/java-decompiler/engine/build/classes/java/main/org/jetbrains/java/decompiler/ClassNameConstants.class"
 

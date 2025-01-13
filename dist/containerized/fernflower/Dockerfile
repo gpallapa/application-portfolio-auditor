@@ -20,6 +20,8 @@ RUN ./build.sh "${FERNFLOWER_VERSION}"
 
 FROM ${IMG_JAVA}
 
+# Fix for issue on M4 - https://github.com/rancher-sandbox/rancher-desktop/issues/8057#issuecomment-2586147638
+ENV JAVA_TOOL_OPTIONS="-XX:UseSVE=0"
 # Update and cleanup
 RUN apt-get update && \
     apt-get upgrade -y && \

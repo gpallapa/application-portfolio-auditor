@@ -3,6 +3,7 @@
  */
 
 import axios from 'axios'
+import https from 'https'
 import fs from 'fs'
 import path from 'path'
 import sharp from 'sharp' // to crop the images
@@ -29,6 +30,11 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 // Path to list of all assets
 const assetListPath = path.join(__dirname, 'assets.json')
+
+// Create an https agent that doesn't verify the certificate
+const agent = new https.Agent({  
+  rejectUnauthorized: false
+});
 
 // Function to create a directory if it doesn't exist
 function ensureDirectoryExists(directory) {
@@ -109,6 +115,7 @@ async function unzipAsset(zipFilePath, unzipOptions) {
   })
 }
 
+
 // Function to download an asset
 async function downloadAsset(url, targetName, targetDir, description, crop, unzip, extractFirstSVG) {
   let writer
@@ -130,7 +137,8 @@ async function downloadAsset(url, targetName, targetDir, description, crop, unzi
       method: 'GET',
       responseType: extractFirstSVG ? 'text' : 'stream',
       headers: requestHeaders,
-      timeout: requestTimeout
+      timeout: requestTimeout,
+      httpsAgent: agent
     })
 
     if (extractFirstSVG) {
