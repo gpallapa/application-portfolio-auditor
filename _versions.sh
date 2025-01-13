@@ -15,7 +15,7 @@ export TOOL_VERSION='2.2.6'
 export WINDUP_VERSION='6.1.11'
 export CSA_VERSION='4.1.18'
 export CSA_BAGGER_VERSION='1.0.3'
-export WAMT_VERSION='24.0.0.1'
+export WAMT_VERSION='24.0.0.2'
 
 ## Languages
 export LINGUIST_VERSION='9.0.0'
@@ -32,7 +32,7 @@ export SCC_VERSION='2.12.0'
 export LIBYEAR_VERSION='1.1.0'
 
 ## Security
-export OWASP_DC_VERSION='11.1.1'
+export OWASP_DC_VERSION='12.0.0'
 export FSB_VERSION='1.13.0'
 export SLSCAN_VERSION='2.1.1'
 export INSIDER_VERSION='3.0.0'

@@ -1,9 +1,9 @@
 FROM --platform=linux/amd64 python:3.12-slim-bookworm
 
 # Python settings: Force unbuffered stdout and stderr (i.e. they are flushed to terminal immediately)
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONUNBUFFERED=1
 # Python settings: do not write pyc files
-ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONDONTWRITEBYTECODE=1
 
 # OS requirements as per
 # https://scancode-toolkit.readthedocs.io/en/latest/getting-started/install.html

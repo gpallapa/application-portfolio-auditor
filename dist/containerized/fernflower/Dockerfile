@@ -20,8 +20,6 @@ RUN ./build.sh "${FERNFLOWER_VERSION}"
 
 FROM ${IMG_JAVA}
 
-# Fix for issue on M4 - https://github.com/rancher-sandbox/rancher-desktop/issues/8057#issuecomment-2586147638
-ENV JAVA_TOOL_OPTIONS="-XX:UseSVE=0"
 # Update and cleanup
 RUN apt-get update && \
     apt-get upgrade -y && \
@@ -29,4 +27,6 @@ RUN apt-get update && \
     apt remove apt --autoremove -y --allow-remove-essential && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 COPY --from=build /build /app
-ENTRYPOINT [ "java", "-jar", "/app/fernflower.jar" ]
+
+# Fix for issue on M4 - https://github.com/rancher-sandbox/rancher-desktop/issues/8057#issuecomment-2586147638
+ENTRYPOINT [ "java", "-XX:UseSVE=0", "-jar", "/app/fernflower.jar" ]

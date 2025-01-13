@@ -12,4 +12,6 @@ RUN apk add --no-cache --upgrade bash && \
 
 FROM ${IMG_JAVA}
 COPY --from=build /wamt /wamt
-ENTRYPOINT [ "java", "-Duser.language=en", "-jar", "/wamt/binaryAppScanner.jar" ]
+
+# Fix for issue on M4 - https://github.com/rancher-sandbox/rancher-desktop/issues/8057#issuecomment-2586147638
+ENTRYPOINT [ "java", "-XX:UseSVE=0", "-Duser.language=en", "-jar", "/wamt/binaryAppScanner.jar" ]

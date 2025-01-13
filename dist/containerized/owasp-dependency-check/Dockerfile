@@ -22,7 +22,8 @@ ARG GID=1000
 
 ENV user=dependencycheck
 ENV JAVA_HOME=/opt/jdk
-ENV JAVA_OPTS="-Danalyzer.assembly.dotnet.path=/usr/bin/dotnet -Danalyzer.bundle.audit.path=/usr/bin/bundle-audit -Danalyzer.golang.path=/usr/local/go/bin/go"
+# Fix for issue on M4 - https://github.com/rancher-sandbox/rancher-desktop/issues/8057#issuecomment-2586147638
+ENV JAVA_OPTS="-XX:UseSVE=0 -Danalyzer.assembly.dotnet.path=/usr/bin/dotnet -Danalyzer.bundle.audit.path=/usr/bin/bundle-audit -Danalyzer.golang.path=/usr/local/go/bin/go"
 
 COPY --from=jlink /jlinked /opt/jdk/
 COPY --from=go /usr/local/go/ /usr/local/go/

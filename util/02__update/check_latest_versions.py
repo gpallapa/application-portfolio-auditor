@@ -223,7 +223,7 @@ if __name__ == '__main__':
         (check_github, 'anchore/syft', r'.*tag/v(.+)', 'Syft', SYFT_VERSION, None),
         (check_github, 'aquasecurity/trivy', r'.*tag/v(.+)', 'Trivy', TRIVY_VERSION, None),
         (check_github, 'google/osv-scanner', r'.*tag/v(.+)', 'OSV', OSV_VERSION, None),
-        (check_wamt, 'https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/downloads/wamt/ApplicationBinaryTP/', r'.*(2024-03-01).*(09:03).*', 'IBM WAMT', WAMT_VERSION, None),
+        (check_wamt, 'https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/downloads/wamt/ApplicationBinaryTP/', r'.*(2024-09-27).*(04:04).*', 'IBM WAMT', WAMT_VERSION, None),
         (check_github, 'bearer/bearer', r'.*tag/v(.+)', 'Bearer', BEARER_VERSION, None),
 
         # Section for the supporting frameworks

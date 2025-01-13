@@ -3,7 +3,7 @@ ARG RUST_VERSION
 FROM rust:${RUST_VERSION}
 ARG HBS_VERSION
 # Required to persist ${HBS_VERSION} at runtime
-ENV HBS_ARG "/out/hbs__${HBS_VERSION}"
+ENV HBS_ARG="/out/hbs__${HBS_VERSION}"
 COPY . /handlebar
 WORKDIR /handlebar
 
